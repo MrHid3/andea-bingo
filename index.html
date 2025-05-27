@@ -20,18 +20,13 @@
             user-select: none;
             transition-duration: 0.5s;
         }
-        td:hover{
+        .clickable:hover{
             background-color: #d5d5d5;
             border: 2px dashed snow;
             border-radius: 10px;
         }
         .free{
             background-color: yellow;
-        }
-        .free:hover{
-            border: 2px dashed black;
-            background-color: yellow;
-            border-radius: 0;
         }
         .clicked{
             background-color: yellow !important;
@@ -47,23 +42,52 @@
             'Skończenie laba', 'Skończenie prezentacji', 'Ktoś sie nie wyloguje', 'Kogoś nie ma', 'Przekleństow na teamsach', 
             'Któryś debil krzyczy kiedy idzemy przez biuro', 'Tosty', 'Kebab', 'Słodkie od firmy', 'Inne wydarzenie firmowe',
             'Process Builder NIE działa', 'Zajęty ping-pong', 'Wyjście wcześniej', 'Spotkanie na klatce schodowej', 'Herbatka',
-            'Prezes mówi "Cześć" (zabiję się)', 'Czegoś się nie da zrobić', 'Grand Theft Karta Dostepu', 'Cytat z Kapitana Bomby', 'Kuba IT przechodzi 3 razy'
+            'Prezes mówi "Cześć"', 'Czegoś się nie da zrobić', 'Grand Theft Karta Dostepu', 'Cytat z Kapitana Bomby', 'Kuba IT przechodzi 3 razy',
+            'Nie ma Kuby', 'Nie ma Dawida', 'Nie ma Bartka', '5 świń (ping-pong)', '3 serwy pod stół',
+            'Wygrana w ganianym', 'Wycieczka do IT'
         ]
+        const date = new Date();
+        let firstOfTheDay
+        if(localStorage.getItem('date') == null){
+            localStorage.setItem('date', date.getDate());
+            firstOfTheDay = true;
+        }else if(localStorage.getItem('date') != date.getDate()){
+            localStorage.getItem('date') = date.getDate();
+            firstOfTheDay = true;
+        }else{
+            firstOfTheDay = false;
+        }
         const app = document.querySelector('#app');
+        let answers = [];
+        let questions;
+        if(!firstOfTheDay){
+            questions = JSON.parse(localStorage.getItem("keys"));
+        }
         for(let i = 0; i < 5; i++){
             const row = document.createElement("tr");
+            answers.push([]);
             for(let j = 0; j < 5; j++){
                 const field = document.createElement("td");
-                const random = Math.floor(Math.random() * bingos.length);
-                field.innerText = bingos[random];
-                bingos.splice(random, 1);
+                if(firstOfTheDay){
+                    const random = Math.floor(Math.random() * bingos.length);
+                    field.innerText = bingos[random];
+                    answers[i].push(bingos[random]);
+                    bingos.splice(random, 1);
+                }else{
+                    field.innerText = questions[i][j]
+                }
+                field.classList.add('clickable')
                 row.appendChild(field);
             }
             app.appendChild(row);
         }
+        if(firstOfTheDay){
+            localStorage.setItem("keys", JSON.stringify(answers))
+        }
         app.children[2].children[2].innerText = 'FREE';
-        app.children[2].children[2].classList.add('free')
-        const fields = document.querySelectorAll('td');
+        app.children[2].children[2].classList.add('free');
+         app.children[2].children[2].classList.remove('clickable');
+        const fields = document.querySelectorAll('.clickable');
         fields.forEach(e => e.addEventListener('click', (ev) => {
             ev.target.classList.toggle('clicked');
         }))
