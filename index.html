@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app{
+            margin: 0 auto;
+            border: 2px solid black;
+        }
+        td{
+            border: 2px dashed black;
+            width: 150px;
+            height: 150px;
+            line-height: 30px;
+            text-align: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition-duration: 0.5s;
+        }
+        td:hover{
+            background-color: #d5d5d5;
+            border: 2px dashed snow;
+            border-radius: 10px;
+        }
+        .free{
+            background-color: yellow;
+        }
+        .free:hover{
+            border: 2px dashed black;
+            background-color: yellow;
+            border-radius: 0;
+        }
+        .clicked{
+            background-color: yellow !important;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <table id="app">
+    </table>
+    <script>
+        const bingos = ['Miłosz 30 minut spóźnienia', 'Opolanki', 'Kaufland', 'Scary SQL', 'Historie Kuby', 
+            'Skończenie laba', 'Skończenie prezentacji', 'Ktoś sie nie wyloguje', 'Kogoś nie ma', 'Przekleństow na teamsach', 
+            'Któryś debil krzyczy kiedy idzemy przez biuro', 'Tosty', 'Kebab', 'Słodkie od firmy', 'Inne wydarzenie firmowe',
+            'Process Builder NIE działa', 'Zajęty ping-pong', 'Wyjście wcześniej', 'Spotkanie na klatce schodowej', 'Herbatka',
+            'Prezes mówi "Cześć" (zabiję się)', 'Czegoś się nie da zrobić', 'Grand Theft Karta Dostepu', 'Cytat z Kapitana Bomby', 'Kuba IT przechodzi 3 razy'
+        ]
+        const app = document.querySelector('#app');
+        for(let i = 0; i < 5; i++){
+            const row = document.createElement("tr");
+            for(let j = 0; j < 5; j++){
+                const field = document.createElement("td");
+                const random = Math.floor(Math.random() * bingos.length);
+                field.innerText = bingos[random];
+                bingos.splice(random, 1);
+                row.appendChild(field);
+            }
+            app.appendChild(row);
+        }
+        app.children[2].children[2].innerText = 'FREE';
+        app.children[2].children[2].classList.add('free')
+        const fields = document.querySelectorAll('td');
+        fields.forEach(e => e.addEventListener('click', (ev) => {
+            ev.target.classList.toggle('clicked');
+        }))
+    </script>
+</body>
+</html>
