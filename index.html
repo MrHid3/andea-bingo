@@ -52,7 +52,7 @@
             localStorage.setItem('date', date.getDate());
             firstOfTheDay = true;
         }else if(localStorage.getItem('date') != date.getDate()){
-            localStorage.getItem('date') = date.getDate();
+            localStorage.setItem('date', date.getDate());
             firstOfTheDay = true;
         }else{
             firstOfTheDay = false;
@@ -86,7 +86,7 @@
         }
         app.children[2].children[2].innerText = 'FREE';
         app.children[2].children[2].classList.add('free');
-         app.children[2].children[2].classList.remove('clickable');
+        app.children[2].children[2].classList.remove('clickable');
         const fields = document.querySelectorAll('.clickable');
         fields.forEach(e => e.addEventListener('click', (ev) => {
             ev.target.classList.toggle('clicked');
